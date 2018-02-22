@@ -1,4 +1,4 @@
-DISPLAIMER:
+<h2>DISPLAIMER:</h2>
 ```
 This script has been made for my personal use and is available here with no garantie nor anything else. 
 Feel free to use it as you see fit, but i'm not responsible for anything, not even support or bugfixing.
@@ -6,7 +6,7 @@ Feel free to use it as you see fit, but i'm not responsible for anything, not ev
 This is a basic script that doesn't check for errors nor sanitize it's inputs, it WILL crash if you do something wrong.
 ```
 
-Required python libraries:
+<b>Required python libraries:</b>
 - youtube-dl (need to install, installable from pip)
     https://github.com/rg3/youtube-dl/blob/master/README.md
 - YoutubeApi (embedded, no need to install)
@@ -14,11 +14,12 @@ Required python libraries:
 - google, youtube api (? maybe ? probably not)
 
 
-"api.key" file:
+<b>"api.key" file:</b>
 - Generate a api key for YouTube Data API V3 in https://console.developers.google.com/apis/dashboard 
 - Copy it into a file called "api.key", in plain text.
 
-"playlists.json" format:
+<b>"playlists.json" format:</b>
+```js
 [
     {
         playlist 1 infos
@@ -27,8 +28,9 @@ Required python libraries:
         playlist 2 infos
     }
 ]
+```
 
-Example playlist:
+<b>Example playlist:</b></br>
 Note: If copy-pasting this exemple, remove the comments, json doesn't support comments.
 ```js
 {
