@@ -29,7 +29,7 @@ Required python libraries:
 ]
 
 Example playlist:
-//If copy-pasting this exemple, remove the comments, json doesn't support comments.
+Note: If copy-pasting this exemple, remove the comments, json doesn't support comments.
 ```js
 {
   "id": "youtube playlist id",      // The string after list="PLx..." in a youtube url
