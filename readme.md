@@ -1,5 +1,13 @@
+DISPLAIMER:
+```
+This script has been made for my personal use and is available here with no garantie nor anything else. 
+Feel free to use it as you see fit, but i'm not responsible for anything, not even support or bugfixing.
+
+This is a basic script that doesn't check for errors nor sanitize it's inputs, it WILL crash if you do something wrong.
+```
+
 Required python libraries:
-- youtube-dl 
+- youtube-dl (need to install, installable from pip)
     https://github.com/rg3/youtube-dl/blob/master/README.md
 - YoutubeApi (embedded, no need to install)
 	"stolen" from https://github.com/rhayun/python-youtube-api
@@ -8,7 +16,7 @@ Required python libraries:
 
 "api.key" file:
 - Generate a api key for YouTube Data API V3 in https://console.developers.google.com/apis/dashboard 
-- Copy it into "api.key" in plain text.
+- Copy it into a file called "api.key", in plain text.
 
 "playlists.json" format:
 [
@@ -22,6 +30,7 @@ Required python libraries:
 
 Example playlist:
 //If copy-pasting this exemple, remove the comments, json doesn't support comments.
+```js
 {
   "id": "youtube playlist id",      // The string after list="PLx..." in a youtube url
   "localPath": "path\\to\\folder",  // The absolute path to where you want the videofiles.
@@ -34,3 +43,4 @@ Example playlist:
   ],
   "videosNumber": 1
 }
+```
