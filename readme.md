@@ -1,11 +1,12 @@
 <h2>DISPLAIMER:</h2>
-```
-This script has been made for my personal use and is available here with no garantie nor anything else. 
-Feel free to use it as you see fit, but i'm not responsible for anything, not even support or bugfixing.
-
-This is a basic script that doesn't check for errors nor sanitize it's inputs, it WILL crash if you do something wrong.
-```
-
+<h3>
+This script has been made for my personal use and is available here with no garantee nor anything else.</br>
+Feel free to use it as you see fit, but i'm not responsible for anything, not even support or bugfixing.</br>
+</br>
+This is a basic script that doesn't check for errors nor sanitize it's inputs.</br>
+It <b>WILL</b> crash if you do something wrong.</br>
+</h3>
+</br>
 <b>Required python libraries:</b>
 - youtube-dl (need to install, installable from pip)
     https://github.com/rg3/youtube-dl/blob/master/README.md
@@ -19,6 +20,7 @@ This is a basic script that doesn't check for errors nor sanitize it's inputs, i
 - Copy it into a file called "api.key", in plain text.
 
 <b>"playlists.json" format:</b>
+
 ```js
 [
     {
@@ -31,7 +33,8 @@ This is a basic script that doesn't check for errors nor sanitize it's inputs, i
 ```
 
 <b>Example playlist:</b></br>
-Note: If copy-pasting this exemple, remove the comments, json doesn't support comments.
+<i>Note: If copy-pasting this exemple, remove the comments, json doesn't support comments.</i>
+
 ```js
 {
   "id": "youtube playlist id",      // The string after list="PLx..." in a youtube url
