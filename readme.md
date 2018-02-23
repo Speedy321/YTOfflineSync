@@ -1,4 +1,4 @@
-<h2>DISPLAIMER:</h2>
+<h2>DISCLAIMER:</h2>
 <h3>
 This script has been made for my personal use and is available here with no garantee nor anything else.</br>
 Feel free to use it as you see fit, but i'm not responsible for anything, not even support or bugfixing.</br>
