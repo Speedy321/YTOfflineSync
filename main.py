@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import os
+import sys
 import fnmatch
 import shutil
 import json
@@ -15,6 +16,8 @@ API_KEY_FILE = "api.key"
 PLAYLISTS_INFO = "playlists.json"
 VIDEO_LINK = "https://www.youtube.com/watch?v="
 
+downloadError = False
+
 class Logger:
     def out(self, string):
         if VERBOSE:
@@ -27,16 +30,15 @@ class Logger:
     def error(self, string):
         print("[YT Offline Sync]!!ERROR!! "+string)
 
-def addVideo(pList, vTitle, vId, vPos):
+def addVideo(pListsFile, pList, vTitle, vId, vPos):
     vInfo = {}
     vInfo['title'] = vTitle
     vInfo['id'] = vId
     vInfo['position'] = vPos
     Logger.out(Logger, "Video added: "+json.dumps(vInfo))
-    pList['videos'].append(vInfo)
-    downloadVideo(pList, vInfo)
+    downloadVideo(pListsFile, pList, vInfo)
 
-def checkForNewVideos(pList, inputList):
+def checkForNewVideos(pListsFile, pList, inputList):
     for video in inputList:
         found = False
         for vid in pList['videos']:
@@ -45,7 +47,7 @@ def checkForNewVideos(pList, inputList):
                 Logger.out(Logger,"Video exists: "+json.dumps(vid))
 
         if(not found):
-            addVideo(pList, video['snippet']['title'], video['snippet']['resourceId']['videoId'], video['snippet']['position'])
+            addVideo(pListsFile, pList, video['snippet']['title'], video['snippet']['resourceId']['videoId'], video['snippet']['position'])
 
 def checkForDeletedVideo(inputList, pList):
     for video in pList['videos']:
@@ -89,18 +91,28 @@ def find(pattern, path):
                 result.append(os.path.join(root, name))
     return result
 
-def downloadVideo(pList, video):
+def downloadVideo(pListsFile, pList, video):
     ydlOpts = {
         'format': 'best',
-        'outtmpl': pList['localPath']+"\\%(title)s.%(ext)s"
+        'outtmpl': pList['localPath']+"\\%(title)s.%(ext)s",
+        'retries': 2
     }
 
     Logger.debug(Logger, str(ydlOpts))
 
-    with youtube_dl.YoutubeDL(ydlOpts) as ydl:
-        ydl.download([VIDEO_LINK + video['id']])
+    try:
+        with youtube_dl.YoutubeDL(ydlOpts) as ydl:
+            ydl.download([VIDEO_LINK + video['id']])
 
-def updatePlaylist(pList):
+    except:
+        Logger.error(Logger, " Failed to download, skipping: "+video['title'])
+        downloadError = True
+        return
+    
+    pList['videos'].append(video)
+    updatePlaylistsFile(pListsFile)
+
+def updatePlaylist(pListsFile, pList):
     youtube = YoutubeAPI(API_KEY)
     pageTokens = []
 
@@ -130,10 +142,11 @@ def updatePlaylist(pList):
     Logger.out(Logger,"SHA1 - " + str(sha1Hash) + " hashed: " + str(sha1Hashed))
 
     if (pList['sha1'] != str(sha1Hashed)):
-        checkForNewVideos(pList, testList['results'])
+        checkForNewVideos(pListsFile, pList, testList['results'])
         checkForDeletedVideo(testList['results'], pList)
 
-        pList['sha1'] = str(sha1Hashed)
+        if (not downloadError):
+            pList['sha1'] = str(sha1Hashed)
         pList['videosNumber'] = testList['info']['totalResults']
         pList['localVersion'] = pList['localVersion']+1
 
@@ -142,6 +155,10 @@ def updatePlaylist(pList):
         Logger.out(Logger, pList['name']+" hasn't changed")
         
     return pList
+
+def updatePlaylistsFile(pLists):
+    with open(PLAYLISTS_INFO, 'w') as f:
+        f.write(json.dumps(pLists, indent=2, sort_keys=True))
 
 if __name__== "__main__":
     with open(API_KEY_FILE) as keyFile:
@@ -155,7 +172,6 @@ if __name__== "__main__":
     newPLists = []
 
     for pList in playlists:
-        newPLists.append(updatePlaylist(pList))
+        newPLists.append(updatePlaylist(playlists, pList))
 
-    with open(PLAYLISTS_INFO, 'w') as f:
-        f.write(json.dumps(playlists, indent=2, sort_keys=True))
+    updatePlaylistsFile(newPLists)
